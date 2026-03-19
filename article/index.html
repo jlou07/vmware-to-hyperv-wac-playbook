@@ -1,0 +1,1261 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Presales-oriented playbook for VMware to Hyper-V migration using Windows Admin Center VM Conversion.">
+      
+      
+      
+        <link rel="canonical" href="https://jlou07.github.io/vmware-to-hyperv-wac-playbook/article/">
+      
+      
+        <link rel="prev" href="../hybrid/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>Full Article - VMware to Hyper-V with WAC - Partner Playbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#from-vmware-to-hyper-v-with-windows-admin-center" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="VMware to Hyper-V with WAC - Partner Playbook" class="md-header__button md-logo" aria-label="VMware to Hyper-V with WAC - Partner Playbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VMware to Hyper-V with WAC - Partner Playbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Full Article
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jlou07/vmware-to-hyperv-wac-playbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jlou07/vmware-to-hyperv-wac-playbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="VMware to Hyper-V with WAC - Partner Playbook" class="md-nav__button md-logo" aria-label="VMware to Hyper-V with WAC - Partner Playbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VMware to Hyper-V with WAC - Partner Playbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jlou07/vmware-to-hyperv-wac-playbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jlou07/vmware-to-hyperv-wac-playbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../limitations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limitations and Risks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hybrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hybrid Positioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Article
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Article
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-leave-vmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why leave VMware?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-windows-admin-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Windows Admin Center?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-vm-conversion-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the VM Conversion extension?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-much-does-vm-conversion-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How much does VM Conversion cost?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-os-versions-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which OS versions are supported?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-prerequisites-for-vm-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What are the prerequisites for VM Conversion?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-many-vms-can-i-migrate-simultaneously" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How many VMs can I migrate simultaneously?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-vm-conversion-tool-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does the VM Conversion tool work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-about-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What about downtime?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-to-vmware-tools-on-the-migrated-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens to VMware Tools on the migrated VM?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-prerequisites-recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 0 – Prerequisites recap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-i-installing-windows-admin-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step I – Installing Windows Admin Center
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-ii-installing-wac-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step II – Installing WAC prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-iii-connecting-to-hyper-v-from-wac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step III – Connecting to Hyper-V from WAC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-iv-windows-test-vm-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step IV – Windows test: VM synchronization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-v-windows-test-vm-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step V – Windows test: VM migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-vi-linux-test-vm-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step VI – Linux test: VM synchronization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-vii-linux-test-vm-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step VII – Linux test: VM migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-leave-vmware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why leave VMware?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-windows-admin-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Windows Admin Center?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-vm-conversion-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the VM Conversion extension?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-much-does-vm-conversion-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How much does VM Conversion cost?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-os-versions-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which OS versions are supported?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-prerequisites-for-vm-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What are the prerequisites for VM Conversion?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-many-vms-can-i-migrate-simultaneously" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How many VMs can I migrate simultaneously?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-vm-conversion-tool-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How does the VM Conversion tool work?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-about-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What about downtime?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-to-vmware-tools-on-the-migrated-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens to VMware Tools on the migrated VM?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-prerequisites-recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 0 – Prerequisites recap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-i-installing-windows-admin-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step I – Installing Windows Admin Center
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-ii-installing-wac-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step II – Installing WAC prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-iii-connecting-to-hyper-v-from-wac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step III – Connecting to Hyper-V from WAC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-iv-windows-test-vm-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step IV – Windows test: VM synchronization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-v-windows-test-vm-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step V – Windows test: VM migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-vi-linux-test-vm-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step VI – Linux test: VM synchronization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-vii-linux-test-vm-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step VII – Linux test: VM migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="from-vmware-to-hyper-v-with-windows-admin-center">From VMware to Hyper-V with Windows Admin Center<a class="headerlink" href="#from-vmware-to-hyper-v-with-windows-admin-center" title="Permanent link">&para;</a></h1>
+<p>Broadcom's acquisition of VMware was a wake-up call. The question is no longer <em>should we migrate?</em> but <em>how do we migrate without breaking everything or losing our minds?</em>. Caught between expensive third-party solutions and risky manual methods, Microsoft has quietly released a powerful tool: the VM Conversion extension for Windows Admin Center (WAC).</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-20.png" /></p>
+<p>After testing the tool — still in preview — I wanted to share my experience. To help you navigate this long article more easily, here are quick links:</p>
+<ul>
+<li><strong>FAQ</strong></li>
+<li><a href="#FAQ-I">Why leave VMware?</a></li>
+<li><a href="#FAQ-II">What is Windows Admin Center?</a></li>
+<li><a href="#FAQ-III">What is the VM Conversion extension?</a></li>
+<li><a href="#FAQ-IV">How much does VM Conversion cost?</a></li>
+<li><a href="#FAQ-V">Which OS versions are supported?</a></li>
+<li><a href="#FAQ-VI">What are the prerequisites for VM Conversion?</a></li>
+<li><a href="#FAQ-VII">How many VMs can I migrate simultaneously?</a></li>
+<li><a href="#FAQ-VIII">How does the VM Conversion tool work?</a></li>
+<li><a href="#FAQ-IX">What about downtime?</a></li>
+<li><a href="#FAQ-X">What happens to VMware Tools on the migrated VM?</a></li>
+<li><strong>Migration walkthrough</strong></li>
+<li><a href="#Etape-0">Step 0 – Prerequisites recap</a></li>
+<li><a href="#Etape-I">Step I – Installing Windows Admin Center</a></li>
+<li><a href="#Etape-II">Step II – Installing WAC prerequisites</a></li>
+<li><a href="#Etape-III">Step III – Connecting to Hyper-V from WAC</a></li>
+<li><a href="#Etape-IV">Step IV – Windows test: VM synchronization</a></li>
+<li><a href="#Etape-V">Step V – Windows test: VM migration</a></li>
+<li><a href="#Etape-VI">Step VI – Linux test: VM synchronization</a></li>
+<li><a href="#Etape-VII">Step VII – Linux test: VM migration</a></li>
+</ul>
+<hr />
+<p><a id="FAQ-I"></a></p>
+<h2 id="why-leave-vmware">Why leave VMware?<a class="headerlink" href="#why-leave-vmware" title="Permanent link">&para;</a></h2>
+<p>Broadcom's acquisition of VMware was a wake-up call. Many customers saw costs jump sharply after the acquisition, as Broadcom changed the licensing model (for example, shifting from perpetual licenses to a subscription model) and restructured its offerings. Some received renewal quotes several times higher than before for the same needs.</p>
+<p>These rapid changes in product structure, bundles, and support have created uncertainty around the VMware roadmap and product future, leading CIOs to rethink their long-term technology choices.</p>
+<p>There are quite a few bloggers writing about this exodus:</p>
+<ul>
+<li><a href="https://pandorafms.com/blog/why-leave-vmware-alternatives-2025/">Why Leave VMware in 2025? Alternatives and Migration Guide</a></li>
+<li><a href="https://openmetal.io/resources/blog/navigating-the-vmware-exit/">Navigating the VMware Exit: Why OpenStack is the Smart Alternative for 2025 and Beyond | OpenMetal IaaS</a></li>
+<li><a href="https://www.cio-online.com/actualites/lire-vmware-6-options-pour-en-sortir-1-piste-pour-y-rester-16231.html">VMware : 6 options pour en sortir, 1 piste pour y rester</a></li>
+<li><a href="https://platform9.com/blog/life-after-vmware-accelerating-vmware-exits-with-in-place-migration/">Life After VMware: Accelerating VMware Exits with In-Place Migration • Platform9</a></li>
+<li><a href="https://medium.com/@PlanB./hyper-v-2026-not-the-same-beast-you-ditched-in-2012-and-thats-a-good-thing-5522709a5c7c">Hyper-V 2026: Not the Same Beast You Ditched in 2012 (And That's a Good Thing) | by Mr.PlanB | Jan, 2026 | Medium</a></li>
+<li><a href="https://happycamper84.medium.com/ditching-broadcom-hyper-v-server-live-migrations-3b41cf2a8830">Ditching Broadcom, Hyper-V Server, &amp; Live Migrations | by Rich | Medium</a></li>
+</ul>
+<p><a id="FAQ-II"></a></p>
+<h2 id="what-is-windows-admin-center">What is Windows Admin Center?<a class="headerlink" href="#what-is-windows-admin-center" title="Permanent link">&para;</a></h2>
+<p>Windows Admin Center (often abbreviated WAC) is a web-based administration tool developed by Microsoft to manage Windows servers, clusters, and hyperconverged environments from a modern browser interface.</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-403-1024x576.png" /></p>
+<p>In practice, Windows Admin Center lets you manage — without using RDP — a wide range of Microsoft services:</p>
+<ul>
+<li>Windows Server</li>
+<li>Hyper-V</li>
+<li>Clusters (Failover Clustering)</li>
+<li>Virtual machines</li>
+<li>Remote servers (on-premises or Azure)</li>
+<li>Storage (Storage Spaces Direct)</li>
+</ul>
+<p>https://youtu.be/wT2ps_71VKU</p>
+<p><a id="FAQ-III"></a></p>
+<h2 id="what-is-the-vm-conversion-extension">What is the VM Conversion extension?<a class="headerlink" href="#what-is-the-vm-conversion-extension" title="Permanent link">&para;</a></h2>
+<p>It is a new Microsoft tool built into Windows Admin Center that enables agentless migration of virtual machines from VMware vCenter/ESXi to Hyper-V:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-400-1024x428.png" /></p>
+<p>It is designed to minimize downtime through live disk replication while the source VM keeps running.</p>
+<p>Note: this extension is not intended for migrations to Azure Local. A separate article covering that migration type is available here: <a href="https://jlou.eu/vmwareazurestackhci/">from VMware to Azure Local</a>.</p>
+<p><a id="FAQ-IV"></a></p>
+<h2 id="how-much-does-vm-conversion-cost">How much does VM Conversion cost?<a class="headerlink" href="#how-much-does-vm-conversion-cost" title="Permanent link">&para;</a></h2>
+<p>The extension is currently in preview. There is no additional licensing cost, but Microsoft does not provide guaranteed support for preview features.</p>
+<p><a id="FAQ-V"></a></p>
+<h2 id="which-os-versions-are-supported">Which OS versions are supported?<a class="headerlink" href="#which-os-versions-are-supported" title="Permanent link">&para;</a></h2>
+<p>Microsoft publishes <a href="https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/vm-conversion-extension-overview#vcenter-versions-and-guest-operating-systems">a broad compatibility list</a>:</p>
+<ul>
+<li>All VMware vCenter 6.x, 7.x, and 8.x versions are supported</li>
+<li>Supported guest operating systems:</li>
+<li>Windows Server 2025, 2022, 2019, 2016, 2012 R2</li>
+<li>Windows 10/11</li>
+<li>Ubuntu 20.04, 24.04</li>
+<li>Debian 11, 12</li>
+<li>Alma Linux</li>
+<li>CentOS</li>
+<li>Red Hat Linux 9.0</li>
+</ul>
+<p>The extension also works in a <strong>clustered Hyper-V (WSFC)</strong> environment: it is cluster-aware and correctly detects nodes and resources.</p>
+<p>It supports migrating VMs from ESXi to Windows Server Failover Clusters (WSFC) running Hyper-V, allowing you to distribute migrated VMs across multiple Hyper-V nodes for HA or performance purposes.</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-405-1024x683.png" /></p>
+<p><a id="FAQ-VI"></a></p>
+<h2 id="what-are-the-prerequisites-for-vm-conversion">What are the prerequisites for VM Conversion?<a class="headerlink" href="#what-are-the-prerequisites-for-vm-conversion" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Windows Admin Center side:</li>
+<li>WAC version v2410 build 2.4.12.10 or later</li>
+<li>PowerShell and PowerCLI installed</li>
+<li>VMware VDDK version 8.0.3 installed</li>
+<li>Visual Studio 2013 and 2015 redistributables installed</li>
+<li>Hyper-V side:</li>
+<li>The Hyper-V role must be installed on the target host(s)</li>
+<li>The account used during the process must be a local administrator or a member of the Hyper-V Administrators group</li>
+<li>For Linux VMs, the Hyper-V modules (hv_vmbus, hv_netvsc, hv_storvsc) and Linux Integration Services (hyperv-daemons or linux-cloud-tools) must be pre-installed in the initramfs before migration</li>
+</ul>
+<p><a id="FAQ-VII"></a></p>
+<h2 id="how-many-vms-can-i-migrate-simultaneously">How many VMs can I migrate simultaneously?<a class="headerlink" href="#how-many-vms-can-i-migrate-simultaneously" title="Permanent link">&para;</a></h2>
+<p>Up to 10 virtual machines per batch. Machines can be grouped by application dependency, cluster placement, or business criteria (e.g., separating test from production environments), which makes large-scale workload migrations more manageable.</p>
+<p><a id="FAQ-VIII"></a></p>
+<h2 id="how-does-the-vm-conversion-tool-work">How does the VM Conversion tool work?<a class="headerlink" href="#how-does-the-vm-conversion-tool-work" title="Permanent link">&para;</a></h2>
+<p>Microsoft clearly explains the two phases in the VM Conversion tool:</p>
+<blockquote>
+<p><strong>Synchronization</strong>: the extension performs a full initial copy of the virtual machine's disks while the source VM continues running. This phase minimizes downtime by letting you plan the final migration at a convenient time.</p>
+<p><strong>Migration</strong>: the extension uses the Change Block Tracking (CBT) feature to identify and replicate only the blocks that have changed since the last synchronization. During the cutover, the source VM is powered off and a final delta sync captures all remaining changes before importing the VM into Hyper-V.</p>
+<p><a href="https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/vm-conversion-extension-overview#how-it-works">Microsoft Learn</a></p>
+</blockquote>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-407.png" /></p>
+<p><a id="FAQ-IX"></a></p>
+<h2 id="what-about-downtime">What about downtime?<a class="headerlink" href="#what-about-downtime" title="Permanent link">&para;</a></h2>
+<p>During the synchronization phase, the source VM keeps running while an initial copy of its disks is transferred to the Hyper-V host, using a snapshot to track changes.</p>
+<p>At cutover time, the source VM is shut down for a final delta sync before import. This process reduces the downtime window to a minimum.</p>
+<p><a id="FAQ-X"></a></p>
+<h2 id="what-happens-to-vmware-tools-on-the-migrated-vm">What happens to VMware Tools on the migrated VM?<a class="headerlink" href="#what-happens-to-vmware-tools-on-the-migrated-vm" title="Permanent link">&para;</a></h2>
+<p>VMware Tools running under Hyper-V can cause driver conflicts, so it is best to remove them.</p>
+<ul>
+<li>Originally, VMware Tools had to be uninstalled manually after switching the VM to Hyper-V.</li>
+<li>Since <a href="https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/whats-new-vm-conversion-extension">version 1.8.0</a>, the extension automatically removes VMware Tools from Windows VMs at the end of the migration process.</li>
+<li>For Linux VMs, it is recommended not to reinstall open-vm-tools on the Hyper-V target (rely solely on the Hyper-V drivers instead).</li>
+</ul>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-18.png" /></p>
+<p>As always, the rest of this article walks you through the full migration process step by step:</p>
+<ul>
+<li><a href="#Etape-0">Step 0 – Prerequisites recap</a></li>
+<li><a href="#Etape-I">Step I – Installing Windows Admin Center</a></li>
+<li><a href="#Etape-II">Step II – Installing WAC prerequisites</a></li>
+<li><a href="#Etape-III">Step III – Connecting to Hyper-V from WAC</a></li>
+<li><a href="#Etape-IV">Step IV – Windows test: VM synchronization</a></li>
+<li><a href="#Etape-V">Step V – Windows test: VM migration</a></li>
+<li><a href="#Etape-VI">Step VI – Linux test: VM synchronization</a></li>
+<li><a href="#Etape-VII">Step VII – Linux test: VM migration</a></li>
+</ul>
+<hr />
+<p><a id="Etape-0"></a></p>
+<h2 id="step-0-prerequisites-recap">Step 0 – Prerequisites recap<a class="headerlink" href="#step-0-prerequisites-recap" title="Permanent link">&para;</a></h2>
+<p>The following prerequisites are required for this exercise covering the migration of a virtual machine from VMware to Hyper-V via Windows Admin Center:</p>
+<ul>
+<li>A VMware environment</li>
+<li>A Hyper-V environment</li>
+<li>Network connectivity between the two hypervisors</li>
+</ul>
+<p>Let's start by installing Windows Admin Center on a new VM hosted in VMware.</p>
+<p><a id="Etape-I"></a></p>
+<h2 id="step-i-installing-windows-admin-center">Step I – Installing Windows Admin Center<a class="headerlink" href="#step-i-installing-windows-admin-center" title="Permanent link">&para;</a></h2>
+<p>On a dedicated virtual machine in your VMware environment, download the latest version of Windows Admin Center from the <a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-admin-center">official Microsoft page</a>:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-1-1024x401.png" /></p>
+<p>Select the Express installation option:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-3.png" /></p>
+<p>For this demonstration, use a self-signed certificate:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-5.png" /></p>
+<p>Start the installation:</p>
+<p><a href="https://jlou.eu/?attachment_id=24024"><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-319.png" /></a></p>
+<p>Once installation is complete, open the Windows Admin Center page and sign in with your account:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-326.png" /></p>
+<p>After signing in, wait a few minutes for the pre-installed extensions to finish loading:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-328-1024x555.png" /></p>
+<p>Go to WAC settings to add the VM Conversion extension:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-329-1024x644.png" /></p>
+<p><a id="Etape-II"></a></p>
+<h2 id="step-ii-installing-wac-prerequisites">Step II – Installing WAC prerequisites<a class="headerlink" href="#step-ii-installing-wac-prerequisites" title="Permanent link">&para;</a></h2>
+<p>As stated in the Microsoft documentation, certain prerequisites must be installed on the Windows Admin Center machine.</p>
+<p>Start by installing <a href="https://www.microsoft.com/en-us/download/details.aspx?id=40784&amp;msockid=3d75fb163d8768940e5fedff3c3f690d">Visual C++ Redistributable Packages for Visual Studio 2013</a>:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-320.png" /></p>
+<p>Then install <a href="https://aka.ms/vc14/vc_redist.x64.exe">Visual C++ 2015-2022 Redistributable 14.50.35719.0</a>:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-321.png" /></p>
+<p>Download and extract <strong>VMware Virtual Disk Development Kit (VDDK)</strong> version 8.0.3 into the following WAC folder:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-336-1024x767.png" /></p>
+<p>Then restart the virtual machine running Windows Admin Center.</p>
+<p><a id="Etape-III"></a></p>
+<h2 id="step-iii-connecting-to-hyper-v-from-wac">Step III – Connecting to Hyper-V from WAC<a class="headerlink" href="#step-iii-connecting-to-hyper-v-from-wac" title="Permanent link">&para;</a></h2>
+<p>Once the WAC VM has restarted, open the console and click here to add a connection to your Hyper-V server:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-330-1024x168.png" /></p>
+<p>Click <strong>Add</strong>:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-8.png" /></p>
+<p>Enter the <strong>IP address</strong> of your Hyper-V host along with the credentials, then click <strong>Add</strong>:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-10.png" /></p>
+<p>The connection is established — click on it to open it:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-333-1024x175.png" /></p>
+<p>In the left menu, find the VM Conversion extension, check the box to install <strong>PowerCLI</strong>, then click here:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-334-1024x689.png" /></p>
+<p>Wait for PowerCLI installation to complete:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-335-1024x640.png" /></p>
+<p>Once installation is complete, click here to add a connection to your <strong>vCenter</strong>, enter your credentials, then click here:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-337-1024x639.png" /></p>
+<p>Once the <strong>vCenter</strong> connection is established, your virtual machines will appear:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-338-1024x641.png" /></p>
+<p>The test environment is now ready. Let's begin with the migration of a Windows Server virtual machine.</p>
+<p><a id="Etape-IV"></a></p>
+<h2 id="step-iv-windows-test-vm-synchronization">Step IV – Windows test: VM synchronization<a class="headerlink" href="#step-iv-windows-test-vm-synchronization" title="Permanent link">&para;</a></h2>
+<p>From the VM list, select one of the available Windows VMs and click here to start synchronization:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-339-1024x397.png" /></p>
+<p>Enter the destination folder on your Hyper-V server, then click Synchronize:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-14.png" /></p>
+<p>The pre-migration check phase has started (accessibility, hardware compatibility, OS compatibility, network configuration, ...):</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-341-1024x310.png" /></p>
+<p>The initial full copy of VMDK disks to Hyper-V is underway, which will produce VHDX files:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-343-1024x325.png" /></p>
+<p>You can observe the folder being created on the Hyper-V server:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-344-1024x544.png" /></p>
+<p>The process switches to differential synchronization mode, copying only the blocks changed since the initial sync and reducing the data volume to be transferred before cutover:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-345-1024x396.png" /></p>
+<p>Target Hyper-V disk (VHDX) provisioning: the infrastructure is preparing storage before applying the synchronized blocks from the VMware VM:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-346-1024x417.png" /></p>
+<p>Delta sync phase: changed blocks identified via CBT are applied to the Hyper-V disk to align the target VM with the current state of the source VM:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-347-1024x412.png" /></p>
+<p>Network card monitoring confirms active data transfer:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-348-1024x776.png" /></p>
+<p>Synchronization complete (100%): all source VM data is now replicated on the Hyper-V side:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-349-1024x292.png" /></p>
+<p>The target VM is now fully aligned with the VMware VM and can be switched to Hyper-V with a minimal final delta.</p>
+<p>We are ready to proceed with the migration.</p>
+<p><a id="Etape-V"></a></p>
+<h2 id="step-v-windows-test-vm-migration">Step V – Windows test: VM migration<a class="headerlink" href="#step-v-windows-test-vm-migration" title="Permanent link">&para;</a></h2>
+<p>At this point, the VMware virtual machine is still running:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-351-1024x429.png" /></p>
+<p>To test the migration delta, add new files to the source virtual machine:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-356-1024x763.png" /></p>
+<p>Go back to Windows Admin Center to trigger the migration:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-363-1024x259.png" /></p>
+<p>Choose whether to uninstall VMware Tools, then click here:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-12.png" /></p>
+<p>Migration launch: pre-migration checks are running before the final cutover to the target Hyper-V VM:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-364-1024x289.png" /></p>
+<p>Pre-migration checks complete: the final delta sync of changed blocks is in progress before the VM is stopped and switched over:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-359-1024x247.png" /></p>
+<p>A snapshot has been created on the VMware side:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-367-1024x313.png" /></p>
+<p>Delta sync in progress: the last set of changed blocks is being applied to definitively align the target VM before the final cutover to Hyper-V:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-365-1024x287.png" /></p>
+<p>Source VM shutdown: the VMware machine is powered off and the final synchronization phase begins before startup on Hyper-V:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-368-1024x282.png" /></p>
+<p>The virtual machine is now stopped on the VMware side:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-369-1024x427.png" /></p>
+<p>Migration complete (100%): the target Hyper-V VM is created, synchronized, and ready to start in production:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-370-1024x293.png" /></p>
+<p>The migrated VM is now running on Hyper-V, confirming successful cutover from the VMware environment:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-371-1024x609.png" /></p>
+<p>Windows detects an unexpected shutdown related to the cutover, confirming the VM was successfully switched from VMware to Hyper-V:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-372.png" /></p>
+<p>VMware Tools error at first boot: the old VMware components, now incompatible under Hyper-V, need to be uninstalled after migration:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-373.png" /></p>
+<p>Uninstall VMware Tools, which are no longer needed once the VM is running under Hyper-V:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-374.png" /></p>
+<p>Files created before the Migrate command are present after the cutover, confirming the integrity of the final synchronization:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-375.png" /></p>
+<p>The Windows server has been successfully migrated from VMware to Hyper-V. Let's now perform the same operation with a Linux server.</p>
+<p><a id="Etape-VI"></a></p>
+<h2 id="step-vi-linux-test-vm-synchronization">Step VI – Linux test: VM synchronization<a class="headerlink" href="#step-vi-linux-test-vm-synchronization" title="Permanent link">&para;</a></h2>
+<p>This example was performed on AlmaLinux / RHEL-like. The goal was to:</p>
+<ul>
+<li>Uninstall VMware Tools</li>
+<li>Install Hyper-V components</li>
+<li>Rebuild initramfs if needed</li>
+<li>Reboot</li>
+</ul>
+<p>Create a Linux virtual machine running an OS compatible with the migration tool:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-376-1024x783.png" /></p>
+<p>Before migration, add Hyper-V drivers to the initramfs, rebuild with <strong>dracut</strong>, then reboot to ensure a correct startup under Hyper-V:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;add_drivers+=&quot; hv_vmbus hv_storvsc hv_netvsc &quot;&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/dracut.conf.d/hyperv.conf
+sudo<span class="w"> </span>dracut<span class="w"> </span>-f<span class="w"> </span>--regenerate-all
+sudo<span class="w"> </span>reboot
+</code></pre></div>
+<p>Still before migration, install Hyper-V Integration Services (hyperv-daemons) to optimize performance and interaction between the Linux VM and the Hyper-V host.</p>
+<p>Example on a RHEL-like distribution (AlmaLinux / Rocky / RHEL). Adapt the command if you are on Ubuntu or Debian:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>hyperv-daemons<span class="w"> </span>-y
+</code></pre></div>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-377-1024x691.png" /></p>
+<p>Verify that the Hyper-V modules (hv_*) are loaded in the Linux kernel to confirm proper Hyper-V support:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-378.png" /></p>
+<p>From the VM list, select one of the available Linux VMs and click here to start synchronization:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-379-1024x270.png" /></p>
+<p>Enter the destination folder on your Hyper-V server, then click Synchronize:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/03/image-16.png" /></p>
+<p>The pre-migration check phase has started (accessibility, hardware compatibility, OS compatibility, network configuration, ...):</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-381-1024x284.png" /></p>
+<p>The initial full copy of VMDK disks to Hyper-V is underway, which will produce VHDX files:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-382-1024x278.png" /></p>
+<p>You can observe the folder being created on the Hyper-V server:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-383.png" /></p>
+<p>The process switches to differential synchronization mode, copying only the blocks changed since the initial sync and reducing the data volume to be transferred before cutover:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-385-1024x288.png" /></p>
+<p>Delta sync phase: changed blocks identified via CBT are applied to the Hyper-V disk to align the target VM with the current state of the source VM:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-387-1024x277.png" /></p>
+<p>Network card monitoring confirms active data transfer:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-388.png" /></p>
+<p>Synchronization complete (100%): all source VM data is now replicated on the Hyper-V side:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-389-1024x284.png" /></p>
+<p>The target VM is now fully aligned with the VMware VM and can be switched to Hyper-V with a minimal final delta.</p>
+<p>We are ready to proceed with the migration.</p>
+<p><a id="Etape-VII"></a></p>
+<h2 id="step-vii-linux-test-vm-migration">Step VII – Linux test: VM migration<a class="headerlink" href="#step-vii-linux-test-vm-migration" title="Permanent link">&para;</a></h2>
+<p>Go back to Windows Admin Center to trigger the migration:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-394-1024x311.png" /></p>
+<p>Migration launch: pre-migration checks are running before the final cutover to the target Hyper-V VM:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-395-1024x301.png" /></p>
+<p>Source VM shutdown: the VMware machine is powered off and the final synchronization phase begins before startup on Hyper-V:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-396-1024x303.png" /></p>
+<p>The virtual machine is now stopped on the VMware side:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-397-1024x796.png" /></p>
+<p>Migration complete (100%): the target Hyper-V VM is created, synchronized, and ready to start in production:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-398-1024x302.png" /></p>
+<p>The migrated VM is now running on Hyper-V, confirming successful cutover from the VMware environment:</p>
+<p><img alt="" src="https://jlou.eu/wp-content/uploads/2026/02/image-401-1024x727.png" /></p>
+<hr />
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>Migrating from VMware to Hyper-V is never a trivial decision. It is usually driven by economic, strategic, or organizational factors. But regardless of the reason, it must remain a controlled, structured, and technically sound operation above all.</p>
+<p>The <strong>VM Conversion</strong> extension for Windows Admin Center is not just a graphical wizard. It provides an orchestrated and consistent approach: initial synchronization, delta via CBT, then a controlled cutover phase. It is not "magic" and does not remove the need for serious preparation. However, the tool provides a clear framework that substantially simplifies a historically complex process.</p>
+<p>In my tests, the experience proved stable and readable. Hyper-V cluster support (WSFC), the progressive synchronization logic, and the unified interface within WAC make migration far more accessible than manual approaches. It remains a preview extension, so you should thoroughly evaluate it in a test environment before any production use — but the underlying technical foundation is solid.</p>
+<p>What is clear is that a credible alternative now exists for organizations looking to diversify or reposition their hypervisor strategy. Migration no longer needs to be seen as a leap into the unknown, but as a structured, manageable, and well-documented project.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
