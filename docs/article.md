@@ -1,42 +1,42 @@
-# De VMware à Hyper-V avec Windows Admin Center
+# From VMware to Hyper-V with Windows Admin Center
 
-Le rachat de VMware par Broadcom a agi comme un électrochoc. Aujourd'hui, la question n'est plus *faut-il migrer?*, mais *comment migrer sans tout casser ou y perdre tous ses cheveux?*. Entre les solutions tierces payantes et les méthodes manuelles risquées, Microsoft a discrètement sorti une arme redoutable : l'extension VM Conversion pour Windows Admin Center (WAC).
+Broadcom's acquisition of VMware was a wake-up call. The question is no longer *should we migrate?* but *how do we migrate without breaking everything or losing our minds?*. Caught between expensive third-party solutions and risky manual methods, Microsoft has quietly released a powerful tool: the VM Conversion extension for Windows Admin Center (WAC).
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-20.png)
 
-Après avoir testé l'outil encore en préversion, je voulais partager avec vous mon expérience. Et pour vous guider plus facilement dans cet article très long, voici des liens rapides :
+After testing the tool — still in preview — I wanted to share my experience. To help you navigate this long article more easily, here are quick links:
 
 - **FAQ**
-  - [Pourquoi quitter VMware ?](#FAQ-I)
-  - [Qu'est-ce que Windows Admin Center ?](#FAQ-II)
-  - [Qu'est-ce que l'extension VM Conversion ?](#FAQ-III)
-  - [Combien coûte VM Conversion ?](#FAQ-IV)
-  - [Quelles versions d'OS sont supportées ?](#FAQ-V)
-  - [Quels sont les prérequis pour VM Conversion ?](#FAQ-VI)
-  - [Combien de VM puis-je migrer simultanément ?](#FAQ-VII)
-  - [Comment l'outil VM Conversion marche ?](#FAQ-VIII)
-  - [Quid du temps d'arrêt ?](#FAQ-IX)
-  - [Que devient VMware Tools sur le VM migré ?](#FAQ-X)
-- **Test de migration**
-  - [Etape 0 – Rappel des prérequis](#Etape-0)
-  - [Etape I – Installation de Windows Admin Center](#Etape-I)
-  - [Etape II – Installation de prérequis WAC](#Etape-II)
-  - [Etape III – Connexion à Hyper-V depuis WAC](#Etape-III)
-  - [Etape IV – Test Windows : Synchronisation de la VM](#Etape-IV)
-  - [Etape V – Test Windows : Migration de la VM](#Etape-V)
-  - [Etape VI – Test Linux : Synchronisation de la VM](#Etape-VI)
-  - [Etape VII – Test Linux : Migration de la VM](#Etape-VII)
+  - [Why leave VMware?](#FAQ-I)
+  - [What is Windows Admin Center?](#FAQ-II)
+  - [What is the VM Conversion extension?](#FAQ-III)
+  - [How much does VM Conversion cost?](#FAQ-IV)
+  - [Which OS versions are supported?](#FAQ-V)
+  - [What are the prerequisites for VM Conversion?](#FAQ-VI)
+  - [How many VMs can I migrate simultaneously?](#FAQ-VII)
+  - [How does the VM Conversion tool work?](#FAQ-VIII)
+  - [What about downtime?](#FAQ-IX)
+  - [What happens to VMware Tools on the migrated VM?](#FAQ-X)
+- **Migration walkthrough**
+  - [Step 0 – Prerequisites recap](#Etape-0)
+  - [Step I – Installing Windows Admin Center](#Etape-I)
+  - [Step II – Installing WAC prerequisites](#Etape-II)
+  - [Step III – Connecting to Hyper-V from WAC](#Etape-III)
+  - [Step IV – Windows test: VM synchronization](#Etape-IV)
+  - [Step V – Windows test: VM migration](#Etape-V)
+  - [Step VI – Linux test: VM synchronization](#Etape-VI)
+  - [Step VII – Linux test: VM migration](#Etape-VII)
 
 ---
 
 <a id="FAQ-I"></a>
-## Pourquoi quitter VMware ?
+## Why leave VMware?
 
-Le rachat de VMware par Broadcom a agi comme un électrochoc. Beaucoup de clients ont vu les coûts augmenter fortement après le rachat, car Broadcom a changé le modèle de licences (par exemple passage d'une licence perpétuelle à un modèle d'abonnement) et restructuré les offres. Certains ont reçu des renouvellements jusqu'à plusieurs fois plus chers qu'avant pour les mêmes besoins.
+Broadcom's acquisition of VMware was a wake-up call. Many customers saw costs jump sharply after the acquisition, as Broadcom changed the licensing model (for example, shifting from perpetual licenses to a subscription model) and restructured its offerings. Some received renewal quotes several times higher than before for the same needs.
 
-Ces changements rapides dans la structuration des produits, des bundles et du support ont créé de l'incertitude sur la roadmap et l'avenir des produits VMware, ce qui amène les DSI à repenser leurs choix technologiques à long terme
+These rapid changes in product structure, bundles, and support have created uncertainty around the VMware roadmap and product future, leading CIOs to rethink their long-term technology choices.
 
-On retrouve d'ailleurs pas mal de blogueurs parlant de cet exode :
+There are quite a few bloggers writing about this exodus:
 
 - [Why Leave VMware in 2025? Alternatives and Migration Guide](https://pandorafms.com/blog/why-leave-vmware-alternatives-2025/)
 - [Navigating the VMware Exit: Why OpenStack is the Smart Alternative for 2025 and Beyond | OpenMetal IaaS](https://openmetal.io/resources/blog/navigating-the-vmware-exit/)
@@ -46,46 +46,46 @@ On retrouve d'ailleurs pas mal de blogueurs parlant de cet exode :
 - [Ditching Broadcom, Hyper-V Server, & Live Migrations | by Rich | Medium](https://happycamper84.medium.com/ditching-broadcom-hyper-v-server-live-migrations-3b41cf2a8830)
 
 <a id="FAQ-II"></a>
-## Qu'est-ce que Windows Admin Center ?
+## What is Windows Admin Center?
 
-Présent depuis des années, Windows Admin Center (souvent abrégé WAC) est un outil d'administration web développé par Microsoft pour gérer des serveurs Windows, des clusters et des environnements hyperconvergés, depuis une interface moderne accessible via navigateur.
+Windows Admin Center (often abbreviated WAC) is a web-based administration tool developed by Microsoft to manage Windows servers, clusters, and hyperconverged environments from a modern browser interface.
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-403-1024x576.png)
 
-Concrètement, Windows Admin Center vous permet d'administrer, sans passer par du RDP, un grand nombre de services Microsoft :
+In practice, Windows Admin Center lets you manage — without using RDP — a wide range of Microsoft services:
 
 - Windows Server
 - Hyper-V
 - Clusters (Failover Clustering)
-- Machines virtuelles
-- Serveurs distants (on-prem ou Azure)
-- Stockage (Storage Spaces Direct)
+- Virtual machines
+- Remote servers (on-premises or Azure)
+- Storage (Storage Spaces Direct)
 
 https://youtu.be/wT2ps\_71VKU
 
 <a id="FAQ-III"></a>
-## Qu'est-ce que l'extension VM Conversion ?
+## What is the VM Conversion extension?
 
-C'est un nouvel outil Microsoft intégré à Windows Admin Center qui permet de migrer des machines virtuelles depuis VMware vCenter/ESXi vers Hyper-V, en mode agentless :
+It is a new Microsoft tool built into Windows Admin Center that enables agentless migration of virtual machines from VMware vCenter/ESXi to Hyper-V:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-400-1024x428.png)
 
-Actuellement, Il s'agit d'une extension prévue pour minimiser le temps d'arrêt grâce à la réplication en ligne des disques.
+It is designed to minimize downtime through live disk replication while the source VM keeps running.
 
-Attention, cette extension n'est pas pour but de migrer vers Azure Local. Un autre article déjà écrit il y a plusieurs mois traite de ce type de migration : [de VMware à Azure Local](https://jlou.eu/vmwareazurestackhci/).
+Note: this extension is not intended for migrations to Azure Local. A separate article covering that migration type is available here: [from VMware to Azure Local](https://jlou.eu/vmwareazurestackhci/).
 
 <a id="FAQ-IV"></a>
-## Combien coûte VM Conversion ?
+## How much does VM Conversion cost?
 
-L'extension est actuellement en préversion. Son usage n'implique aucun coût de licence supplémentaire, mais pas non plus de support garanti par Microsoft.
+The extension is currently in preview. There is no additional licensing cost, but Microsoft does not provide guaranteed support for preview features.
 
 <a id="FAQ-V"></a>
-## Quelles versions d'OS sont supportées ?
+## Which OS versions are supported?
 
-Microsoft annonce [une large liste](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/vm-conversion-extension-overview#vcenter-versions-and-guest-operating-systems) sur la compatibilité :
+Microsoft publishes [a broad compatibility list](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/vm-conversion-extension-overview#vcenter-versions-and-guest-operating-systems):
 
-- Tous les vCenter VMware 6.x, 7.x et 8.x sont pris en charge
-- Côté OS invités :
+- All VMware vCenter 6.x, 7.x, and 8.x versions are supported
+- Supported guest operating systems:
   - Windows Server 2025, 2022, 2019, 2016, 2012 R2
   - Windows 10/11
   - Ubuntu 20.04, 24.04
@@ -94,303 +94,303 @@ Microsoft annonce [une large liste](https://learn.microsoft.com/en-us/windows-se
   - CentOS
   - Red Hat Linux 9.0
 
-L'extension fonctionne également dans un environnement **Hyper-V en cluster (WSFC)** : elle est cluster-aware et détecte correctement les nœuds et ressources.
+The extension also works in a **clustered Hyper-V (WSFC)** environment: it is cluster-aware and correctly detects nodes and resources.
 
-Il supporte la migration de VM depuis ESXi vers des clusters Windows Server Failover (WSFC) sous Hyper-V. Vous pouvez donc distribuer les VM migrées sur plusieurs nœuds Hyper-V pour HA ou performances.
+It supports migrating VMs from ESXi to Windows Server Failover Clusters (WSFC) running Hyper-V, allowing you to distribute migrated VMs across multiple Hyper-V nodes for HA or performance purposes.
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-405-1024x683.png)
 
 <a id="FAQ-VI"></a>
-## Quels sont les prérequis pour VM Conversion ?
+## What are the prerequisites for VM Conversion?
 
-- Côté Windows Admin Center :
-  - WAC en version au moins v2410 build 2.4.12.10 ou supérieure
-  - PowerShell et PowerCLI installés
-  - VMware VDDK version 8.0.3 installé
-  - Visual Studio 2013 et 2015 installés
-- Côté Hyper-V :
-  - le rôle Hyper-V doit être installé sur le (s) hôte (s) cible
-  - Le compte utilisé durant le processus doit être administrateur local ou membre du groupe Hyper-V Administrators).
-  - Si des VMs migrées sont sous Linux, les modules Hyper-V (hv\_vmbus, hv\_netvsc, hv\_storvsc) et Linux Integration Services (hyperv-daemons ou linux-cloud-tools) doivent être pré-installés dans l'initramfs avant migration.
+- Windows Admin Center side:
+  - WAC version v2410 build 2.4.12.10 or later
+  - PowerShell and PowerCLI installed
+  - VMware VDDK version 8.0.3 installed
+  - Visual Studio 2013 and 2015 redistributables installed
+- Hyper-V side:
+  - The Hyper-V role must be installed on the target host(s)
+  - The account used during the process must be a local administrator or a member of the Hyper-V Administrators group
+  - For Linux VMs, the Hyper-V modules (hv\_vmbus, hv\_netvsc, hv\_storvsc) and Linux Integration Services (hyperv-daemons or linux-cloud-tools) must be pre-installed in the initramfs before migration
 
 <a id="FAQ-VII"></a>
-## Combien de VM puis-je migrer simultanément ?
+## How many VMs can I migrate simultaneously?
 
-Jusqu'à 10 machines virtuelles par lot. On peut grouper ces machines selon leur dépendance applicative, leur placement dans un cluster ou même selon des critères métier (ex : séparer environnement de test/prod). Cela facilite les migrations massives par workload.
+Up to 10 virtual machines per batch. Machines can be grouped by application dependency, cluster placement, or business criteria (e.g., separating test from production environments), which makes large-scale workload migrations more manageable.
 
 <a id="FAQ-VIII"></a>
-## Comment l'outil VM Conversion marche ?
+## How does the VM Conversion tool work?
 
-Microsoft explique bien les deux phases présentes dans l'outil VM Conversion :
+Microsoft clearly explains the two phases in the VM Conversion tool:
 
-> **Synchronisation** : l'extension effectue une copie complète initiale des disques de la machine virtuelle pendant que la VM source continue de fonctionner. Cette phase minimise les temps d'arrêt en vous permettant de planifier la migration finale à un moment qui vous convient.
+> **Synchronization**: the extension performs a full initial copy of the virtual machine's disks while the source VM continues running. This phase minimizes downtime by letting you plan the final migration at a convenient time.
 >
-> **Migration** : l'extension utilise la fonctionnalité Change Block Tracking (CBT) pour rechercher et répliquer uniquement les blocs modifiés depuis la dernière synchronisation. Pendant la transition, la machine virtuelle source est mise hors tension et une synchronisation delta finale capture toutes les modifications restantes avant d'importer la machine virtuelle dans Hyper-V.
+> **Migration**: the extension uses the Change Block Tracking (CBT) feature to identify and replicate only the blocks that have changed since the last synchronization. During the cutover, the source VM is powered off and a final delta sync captures all remaining changes before importing the VM into Hyper-V.
 >
 > [Microsoft Learn](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/vm-conversion-extension-overview#how-it-works)
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-407.png)
 
 <a id="FAQ-IX"></a>
-## Quid du temps d'arrêt ?
+## What about downtime?
 
-Pendant la phase de synchronisation, la VM source continue de tourner, pendant qu'une copie initiale des disques est envoyée sur l'hôte Hyper-V, via la création d'un snapshot pour suivre les changements.
+During the synchronization phase, the source VM keeps running while an initial copy of its disks is transferred to the Hyper-V host, using a snapshot to track changes.
 
-Au moment de la bascule, la VM source est arrêtée pour un dernier delta-sync avant import; ce processus réduit donc au minimum la fenêtre d'arrêt.
+At cutover time, the source VM is shut down for a final delta sync before import. This process reduces the downtime window to a minimum.
 
 <a id="FAQ-X"></a>
-## Que devient VMware Tools sur le VM migré ?
+## What happens to VMware Tools on the migrated VM?
 
-La présence de VMware Tools dans une VM sous Hyper-V peut provoquer des conflits de pilotes, donc il vaut mieux les retirer.
+VMware Tools running under Hyper-V can cause driver conflicts, so it is best to remove them.
 
-- Initialement, il fallait supprimer les outils VMware Tools manuellement après la bascule vers Hyper-V.
-- Depuis la [version 1.8.0](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/whats-new-vm-conversion-extension), l'extension supprime automatiquement VMware Tools sur les VM Windows migrées en fin de processus.
-- Pour les VM Linux, il est recommandé de ne pas réinstaller open-vm-tools sur la cible Hyper-V (on s'appuie uniquement sur les pilotes Hyper-V ajoutés).
+- Originally, VMware Tools had to be uninstalled manually after switching the VM to Hyper-V.
+- Since [version 1.8.0](https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/use/whats-new-vm-conversion-extension), the extension automatically removes VMware Tools from Windows VMs at the end of the migration process.
+- For Linux VMs, it is recommended not to reinstall open-vm-tools on the Hyper-V target (rely solely on the Hyper-V drivers instead).
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-18.png)
 
-Et enfin, comme toujours, je vous propose dans la suite de cet article d'effectuer ensemble un pas à pas pour couvrir la migration de machines virtuelles hébergées sur VMware vers Hyper-V :
+As always, the rest of this article walks you through the full migration process step by step:
 
-- [Etape 0 – Rappel des prérequis](#Etape-0)
-- [Etape I – Installation de Windows Admin Center](#Etape-I)
-- [Etape II – Installation de prérequis WAC](#Etape-II)
-- [Etape III – Connexion à Hyper-V depuis WAC](#Etape-III)
-- [Etape IV – Test Windows : Synchronisation de la VM](#Etape-IV)
-- [Etape V – Test Windows : Migration de la VM](#Etape-V)
-- [Etape VI – Test Linux : Synchronisation de la VM](#Etape-VI)
-- [Etape VII – Test Linux : Migration de la VM](#Etape-VII)
+- [Step 0 – Prerequisites recap](#Etape-0)
+- [Step I – Installing Windows Admin Center](#Etape-I)
+- [Step II – Installing WAC prerequisites](#Etape-II)
+- [Step III – Connecting to Hyper-V from WAC](#Etape-III)
+- [Step IV – Windows test: VM synchronization](#Etape-IV)
+- [Step V – Windows test: VM migration](#Etape-V)
+- [Step VI – Linux test: VM synchronization](#Etape-VI)
+- [Step VII – Linux test: VM migration](#Etape-VII)
 
 ---
 
 <a id="Etape-0"></a>
-## Etape 0 – Rappel des prérequis
+## Step 0 – Prerequisites recap
 
-Des prérequis sont nécessaires pour réaliser cet exercice dédié à la migration d'une machine virtuelle hébergée sur VMware vers Hyper-V via Windows Admin Center. Pour tout cela, j'ai utilisé :
+The following prerequisites are required for this exercise covering the migration of a virtual machine from VMware to Hyper-V via Windows Admin Center:
 
-- Un environnement VMware
-- Un environnement Hyper-V
-- Une connexion réseau entre le réseau les deux hyperviseurs
+- A VMware environment
+- A Hyper-V environment
+- Network connectivity between the two hypervisors
 
-Commençons par l'installation de Windows Admin Center sur une nouvelle machine hébergée sur VMware.
+Let's start by installing Windows Admin Center on a new VM hosted in VMware.
 
 <a id="Etape-I"></a>
-## Etape I – Installation de Windows Admin Center
+## Step I – Installing Windows Admin Center
 
-Sur une machine virtuelle dédiée dans votre environnement VMware, téléchargez la dernière version de Windows Admin Center depuis la [page officielle de Microsoft](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-admin-center) :
+On a dedicated virtual machine in your VMware environment, download the latest version of Windows Admin Center from the [official Microsoft page](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-admin-center):
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-1-1024x401.png)
 
-Choisissez l'installation avec l'option Express :
+Select the Express installation option:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-3.png)
 
-Dans cette démonstration, utilisez un certificat temporaire :
+For this demonstration, use a self-signed certificate:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-5.png)
 
-Lancez l'installation :
+Start the installation:
 
 [![](https://jlou.eu/wp-content/uploads/2026/02/image-319.png)](https://jlou.eu/?attachment_id=24024)
 
-Une fois l'installation terminée, ouvrez la page de Windows Admin Center, puis authentifiez-vous avec votre compte :
+Once installation is complete, open the Windows Admin Center page and sign in with your account:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-326.png)
 
-Une fois connecté dans la console Windows Admin Center, attendez quelques minutes la fin de l'installation des extensions préinstallées :
+After signing in, wait a few minutes for the pre-installed extensions to finish loading:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-328-1024x555.png)
 
-Rendez vous dans les paramétrages dans WAC afin d'ajouter l'extension dédiée à la migration :
+Go to WAC settings to add the VM Conversion extension:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-329-1024x644.png)
 
 <a id="Etape-II"></a>
-## Etape II – Installation de prérequis WAC
+## Step II – Installing WAC prerequisites
 
-Comme indiqué dans la documentation Microsoft, certains prérequis doivent être installés sur la machine de Windows Admin Center.
+As stated in the Microsoft documentation, certain prerequisites must be installed on the Windows Admin Center machine.
 
-Commencez par installer [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784&msockid=3d75fb163d8768940e5fedff3c3f690d)
+Start by installing [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784&msockid=3d75fb163d8768940e5fedff3c3f690d):
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-320.png)
 
-Continuez en installant également [Visual C++ 2015-2022 Redistributable 14.50.35719.0](https://aka.ms/vc14/vc_redist.x64.exe) :
+Then install [Visual C++ 2015-2022 Redistributable 14.50.35719.0](https://aka.ms/vc14/vc_redist.x64.exe):
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-321.png)
 
-Récupérez et décompressez **VMware Virtual Disk Development Kit (VDDK),** en version 8.0.3, dans le dossier WAC suivant :
+Download and extract **VMware Virtual Disk Development Kit (VDDK)** version 8.0.3 into the following WAC folder:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-336-1024x767.png)
 
-Redémarrez ensuite votre machine virtuelle contenant Windows Admin Center.
+Then restart the virtual machine running Windows Admin Center.
 
 <a id="Etape-III"></a>
-## Etape III – Connexion à Hyper-V depuis WAC
+## Step III – Connecting to Hyper-V from WAC
 
-Une fois la machine virtuelle WAC redémarrée, rouvrez la console, puis cliquez ici pour ajouter une connexion vers votre serveur Hyper-V :
+Once the WAC VM has restarted, open the console and click here to add a connection to your Hyper-V server:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-330-1024x168.png)
 
-Cliquez sur **Ajouter** :
+Click **Add**:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-8.png)
 
-Renseignez l'**adresse IP** de votre Hyper-V, les éléments d'identification, puis cliquez sur **Ajouter** :
+Enter the **IP address** of your Hyper-V host along with the credentials, then click **Add**:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-10.png)
 
-La connexion est établie, cliquez dessus pour l'ouvrir :
+The connection is established — click on it to open it:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-333-1024x175.png)
 
-Dans le menu de gauche, cherchez l'extension consacrée à la migration, cochez la case suivante pour installer **PowerCLI**, puis cliquez ici :
+In the left menu, find the VM Conversion extension, check the box to install **PowerCLI**, then click here:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-334-1024x689.png)
 
-Attendez la fin de l'installation de PowerCLI :
+Wait for PowerCLI installation to complete:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-335-1024x640.png)
 
-Une fois l'installation terminée, cliquez ici ajouter une connexion à votre **vCenter**, renseignez vos informations de connexion, puis cliquez ici :
+Once installation is complete, click here to add a connection to your **vCenter**, enter your credentials, then click here:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-337-1024x639.png)
 
-Une fois la connexion établie avec **vCenter**, les machines virtuelles s'afficheront :
+Once the **vCenter** connection is established, your virtual machines will appear:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-338-1024x641.png)
 
-Le protocole de test est maintenant en place. Commençons les tests par la migration d'une machine virtuelle fonctionnant sous Windows Server.
+The test environment is now ready. Let's begin with the migration of a Windows Server virtual machine.
 
 <a id="Etape-IV"></a>
-## Etape IV – Test Windows : Synchronisation de la VM
+## Step IV – Windows test: VM synchronization
 
-Toujours dans la liste des machines virtuelles, cochez sur une des VMs Windows disponibles, puis cliquez ici pour démarrer la synchronisation :
+From the VM list, select one of the available Windows VMs and click here to start synchronization:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-339-1024x397.png)
 
-Renseignez le dossier de destination sur votre serveur Hyper-V, puis cliquez sur Synchroniser :
+Enter the destination folder on your Hyper-V server, then click Synchronize:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-14.png)
 
-La phase de vérification préalable à la migration vient de démarrer (accessibilité, compatibilité matérielle, compatibilité OS, configuration réseau, ...) :
+The pre-migration check phase has started (accessibility, hardware compatibility, OS compatibility, network configuration, ...):
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-341-1024x310.png)
 
-La première copie des disques VMDK vers Hyper-V est en cours pour la création des fichiers VHDX par la suite :
+The initial full copy of VMDK disks to Hyper-V is underway, which will produce VHDX files:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-343-1024x325.png)
 
-Constatez d'ailleurs la création du dossier sur le serveur Hyper-V :
+You can observe the folder being created on the Hyper-V server:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-344-1024x544.png)
 
-La migration passe en mode synchronisation différentielle afin de ne copier que les blocs modifiés depuis la synchronisation initiale, réduisant ainsi le volume de données à transférer avant le cutover :
+The process switches to differential synchronization mode, copying only the blocks changed since the initial sync and reducing the data volume to be transferred before cutover:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-345-1024x396.png)
 
-Provisioning du disque cible Hyper-V (VHDX) : l'infrastructure prépare le stockage avant l'application des blocs synchronisés issus de la VM VMware :
+Target Hyper-V disk (VHDX) provisioning: the infrastructure is preparing storage before applying the synchronized blocks from the VMware VM:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-346-1024x417.png)
 
-Phase de delta sync : les blocs modifiés identifiés via CBT sont appliqués au disque Hyper-V afin d'aligner la VM cible avec l'état courant de la VM source :
+Delta sync phase: changed blocks identified via CBT are applied to the Hyper-V disk to align the target VM with the current state of the source VM:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-347-1024x412.png)
 
-Le monitoring de la carte réseau montre bien le transfert des données :
+Network card monitoring confirms active data transfer:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-348-1024x776.png)
 
-Synchronisation complète (100 %) : l'intégralité des données de la VM source est maintenant répliquée côté Hyper-V :
+Synchronization complete (100%): all source VM data is now replicated on the Hyper-V side:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-349-1024x292.png)
 
-La VM cible est maintenant entièrement alignée avec la VM VMware et peut être basculée vers Hyper-V avec un dernier delta minimal.
+The target VM is now fully aligned with the VMware VM and can be switched to Hyper-V with a minimal final delta.
 
-Nous allons pouvoir procéder à la migration.
+We are ready to proceed with the migration.
 
 <a id="Etape-V"></a>
-## Etape V – Test Windows : Migration de la VM
+## Step V – Windows test: VM migration
 
-A ce stade, la machine virtuelle sous VMware est toujours allumée :
+At this point, the VMware virtual machine is still running:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-351-1024x429.png)
 
-Testez le delta de migration en rajoutant sur votre machine virtuelle source de nouveaux fichiers :
+To test the migration delta, add new files to the source virtual machine:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-356-1024x763.png)
 
-Retournez ensuite sur Windows Admin Center afin de lancer la migration de celle-ci :
+Go back to Windows Admin Center to trigger the migration:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-363-1024x259.png)
 
-Choisissez ou non de désinstaller les outils VMware, puis cliquez ici :
+Choose whether to uninstall VMware Tools, then click here:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-12.png)
 
-Lancement de la migration : exécution des vérifications préalables avant bascule définitive vers la VM Hyper-V cible :
+Migration launch: pre-migration checks are running before the final cutover to the target Hyper-V VM:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-364-1024x289.png)
 
-Vérifications pré-migration terminées : la synchronisation finale des blocs modifiés (delta sync) est en cours avant l'arrêt et la bascule de la VM :
+Pre-migration checks complete: the final delta sync of changed blocks is in progress before the VM is stopped and switched over:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-359-1024x247.png)
 
-Un snapshot est bien créé côté VMware :
+A snapshot has been created on the VMware side:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-367-1024x313.png)
 
-Delta Sync en cours : application des derniers blocs modifiés afin d'aligner définitivement la VM cible avant le cutover final vers Hyper-V.
+Delta sync in progress: the last set of changed blocks is being applied to definitively align the target VM before the final cutover to Hyper-V:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-365-1024x287.png)
 
-Arrêt de la VM source : la machine VMware est éteinte et la phase finale de synchronisation est lancée avant le démarrage côté Hyper-V :
+Source VM shutdown: the VMware machine is powered off and the final synchronization phase begins before startup on Hyper-V:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-368-1024x282.png)
 
-La machine virtuelle est bien arrêtée côté VMware :
+The virtual machine is now stopped on the VMware side:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-369-1024x427.png)
 
-Migration terminée (100 %) : la VM cible Hyper-V est créée, synchronisée et prête à être démarrée en production :
+Migration complete (100%): the target Hyper-V VM is created, synchronized, and ready to start in production:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-370-1024x293.png)
 
-La VM migrée s'exécute désormais sur Hyper-V, confirmant le succès du cutover depuis l'environnement VMware :
+The migrated VM is now running on Hyper-V, confirming successful cutover from the VMware environment:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-371-1024x609.png)
 
-Windows détecte un arrêt inattendu lié au cutover, confirmant que la VM a bien été basculée depuis l'environnement VMware vers Hyper-V :
+Windows detects an unexpected shutdown related to the cutover, confirming the VM was successfully switched from VMware to Hyper-V:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-372.png)
 
-Erreur VMware Tools au premier démarrage : les anciens composants VMware, désormais incompatibles sous Hyper-V, doivent être désinstallés après la migration :
+VMware Tools error at first boot: the old VMware components, now incompatible under Hyper-V, need to be uninstalled after migration:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-373.png)
 
-Désinstallez les VMware Tools devenus inutiles après le passage de la VM sous Hyper-V :
+Uninstall VMware Tools, which are no longer needed once the VM is running under Hyper-V:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-374.png)
 
-Les fichiers créés avant la commande Migrate sont bien présents après la bascule, confirmant l'intégrité de la synchronisation finale :
+Files created before the Migrate command are present after the cutover, confirming the integrity of the final synchronization:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-375.png)
 
-Notre serveur Windows a bien été migré depuis VMware vers Hyper-V avec succès. Testons maintenant la même opération avec un serveur Linux.
+The Windows server has been successfully migrated from VMware to Hyper-V. Let's now perform the same operation with a Linux server.
 
 <a id="Etape-VI"></a>
-## Etape VI – Test Linux : Synchronisation de la VM
+## Step VI – Linux test: VM synchronization
 
-Exemple réalisé ici sur AlmaLinux / RHEL-like. Le but étant de :
+This example was performed on AlmaLinux / RHEL-like. The goal was to:
 
-- Désinstaller VMware Tools
-- Installer composants Hyper-V
-- Recréer initramfs si nécessaire
+- Uninstall VMware Tools
+- Install Hyper-V components
+- Rebuild initramfs if needed
 - Reboot
 
-Pour cela créez une machine virtuelle Linux dont l'OS est compatible avec l'outil de Migration :
+Create a Linux virtual machine running an OS compatible with the migration tool:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-376-1024x783.png)
 
-Avant la migration, ajoutez les pilotes Hyper-V à l'initramfs, reconstruction avec **dracut**, puis redémarrage pour assurer un démarrage correct sous Hyper-V.
+Before migration, add Hyper-V drivers to the initramfs, rebuild with **dracut**, then reboot to ensure a correct startup under Hyper-V:
 
 ```bash
 echo 'add_drivers+=" hv_vmbus hv_storvsc hv_netvsc "' | sudo tee /etc/dracut.conf.d/hyperv.conf
@@ -398,9 +398,9 @@ sudo dracut -f --regenerate-all
 sudo reboot
 ```
 
-Toujours avant la migration, installez des services d'intégration Hyper-V (hyperv-daemons) afin d'optimiser les performances et l'interaction entre la VM Linux et l'hôte Hyper-V.
+Still before migration, install Hyper-V Integration Services (hyperv-daemons) to optimize performance and interaction between the Linux VM and the Hyper-V host.
 
-Exemple réalisé sur une distribution RHEL-like (AlmaLinux / Rocky / RHEL). (Adaptez la commande si vous êtes sur Ubuntu ou Debian) :
+Example on a RHEL-like distribution (AlmaLinux / Rocky / RHEL). Adapt the command if you are on Ubuntu or Debian:
 
 ```bash
 sudo dnf install hyperv-daemons -y
@@ -408,74 +408,74 @@ sudo dnf install hyperv-daemons -y
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-377-1024x691.png)
 
-Vérifiez le chargement des modules Hyper-V (hv\_\*) dans le noyau Linux afin de confirmer la bonne prise en charge de l'environnement Hyper-V :
+Verify that the Hyper-V modules (hv\_\*) are loaded in the Linux kernel to confirm proper Hyper-V support:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-378.png)
 
-Toujours dans la liste des machines virtuelles, cochez sur une des VMs Linux disponibles, puis cliquez ici pour démarrer la synchronisation :
+From the VM list, select one of the available Linux VMs and click here to start synchronization:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-379-1024x270.png)
 
-Renseignez le dossier de destination sur votre serveur Hyper-V, puis cliquez sur Synchroniser :
+Enter the destination folder on your Hyper-V server, then click Synchronize:
 
 ![](https://jlou.eu/wp-content/uploads/2026/03/image-16.png)
 
-La phase de vérification préalable à la migration vient de démarrer (accessibilité, compatibilité matérielle, compatibilité OS, configuration réseau, …) :
+The pre-migration check phase has started (accessibility, hardware compatibility, OS compatibility, network configuration, ...):
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-381-1024x284.png)
 
-La première copie des disques VMDK vers Hyper-V est en cours pour la création des fichiers VHDX par la suite :
+The initial full copy of VMDK disks to Hyper-V is underway, which will produce VHDX files:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-382-1024x278.png)
 
-Constatez d'ailleurs la création du dossier sur le serveur Hyper-V :
+You can observe the folder being created on the Hyper-V server:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-383.png)
 
-La migration passe en mode synchronisation différentielle afin de ne copier que les blocs modifiés depuis la synchronisation initiale, réduisant ainsi le volume de données à transférer avant le cutover :
+The process switches to differential synchronization mode, copying only the blocks changed since the initial sync and reducing the data volume to be transferred before cutover:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-385-1024x288.png)
 
-Phase de delta sync : les blocs modifiés identifiés via CBT sont appliqués au disque Hyper-V afin d'aligner la VM cible avec l'état courant de la VM source :
+Delta sync phase: changed blocks identified via CBT are applied to the Hyper-V disk to align the target VM with the current state of the source VM:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-387-1024x277.png)
 
-Le monitoring de la carte réseau montre bien le transfert des données :
+Network card monitoring confirms active data transfer:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-388.png)
 
-Synchronisation complète (100 %) : l'intégralité des données de la VM source est maintenant répliquée côté Hyper-V :
+Synchronization complete (100%): all source VM data is now replicated on the Hyper-V side:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-389-1024x284.png)
 
-La VM cible est maintenant entièrement alignée avec la VM VMware et peut être basculée vers Hyper-V avec un dernier delta minimal.
+The target VM is now fully aligned with the VMware VM and can be switched to Hyper-V with a minimal final delta.
 
-Nous allons pouvoir procéder à la migration.
+We are ready to proceed with the migration.
 
 <a id="Etape-VII"></a>
-## Etape VII – Test Linux : Migration de la VM
+## Step VII – Linux test: VM migration
 
-Retournez ensuite sur Windows Admin Center afin de lancer la migration de celle-ci :
+Go back to Windows Admin Center to trigger the migration:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-394-1024x311.png)
 
-Lancement de la migration : exécution des vérifications préalables avant bascule définitive vers la VM Hyper-V cible :
+Migration launch: pre-migration checks are running before the final cutover to the target Hyper-V VM:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-395-1024x301.png)
 
-Arrêt de la VM source : la machine VMware est éteinte et la phase finale de synchronisation est lancée avant le démarrage côté Hyper-V :
+Source VM shutdown: the VMware machine is powered off and the final synchronization phase begins before startup on Hyper-V:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-396-1024x303.png)
 
-La machine virtuelle est bien arrêtée côté VMware :
+The virtual machine is now stopped on the VMware side:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-397-1024x796.png)
 
-Migration terminée (100 %) : la VM cible Hyper-V est créée, synchronisée et prête à être démarrée en production :
+Migration complete (100%): the target Hyper-V VM is created, synchronized, and ready to start in production:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-398-1024x302.png)
 
-La VM migrée s'exécute désormais sur Hyper-V, confirmant le succès du cutover depuis l'environnement VMware :
+The migrated VM is now running on Hyper-V, confirming successful cutover from the VMware environment:
 
 ![](https://jlou.eu/wp-content/uploads/2026/02/image-401-1024x727.png)
 
@@ -483,10 +483,10 @@ La VM migrée s'exécute désormais sur Hyper-V, confirmant le succès du cutove
 
 ## Conclusion
 
-La migration d'un environnement VMware vers Hyper-V n'est jamais une décision anodine. Elle est souvent motivée par des enjeux économiques, stratégiques ou organisationnels. Mais quelle qu'en soit la raison, elle doit rester avant tout une opération maîtrisée, structurée et techniquement fiable.
+Migrating from VMware to Hyper-V is never a trivial decision. It is usually driven by economic, strategic, or organizational factors. But regardless of the reason, it must remain a controlled, structured, and technically sound operation above all.
 
-L'extension **VM Conversion** de Windows Admin Center n'est pas un simple assistant graphique. Elle propose une approche orchestrée et cohérente : synchronisation initiale, delta via CBT, puis phase de bascule contrôlée. Ce n'est pas "magique" et cela ne dispense pas d'une préparation sérieuse. En revanche, l'outil apporte un cadre clair qui simplifie fortement un processus historiquement complexe.
+The **VM Conversion** extension for Windows Admin Center is not just a graphical wizard. It provides an orchestrated and consistent approach: initial synchronization, delta via CBT, then a controlled cutover phase. It is not "magic" and does not remove the need for serious preparation. However, the tool provides a clear framework that substantially simplifies a historically complex process.
 
-Dans mes tests, l'expérience s'est révélée stable et lisible. La gestion des clusters Hyper-V (WSFC), la logique de synchronisation progressive et l'interface unifiée dans WAC rendent la migration bien plus accessible qu'avec des méthodes artisanales. Cela reste une extension en preview, donc à évaluer sérieusement en environnement de test avant toute utilisation en production, mais la base technique est solide.
+In my tests, the experience proved stable and readable. Hyper-V cluster support (WSFC), the progressive synchronization logic, and the unified interface within WAC make migration far more accessible than manual approaches. It remains a preview extension, so you should thoroughly evaluate it in a test environment before any production use — but the underlying technical foundation is solid.
 
-Ce qui est certain, c'est qu'une alternative crédible existe désormais pour les organisations qui souhaitent diversifier ou repositionner leur stratégie d'hyperviseur. La migration ne doit plus être perçue comme un saut dans l'inconnu, mais comme un projet structuré, pilotable et documenté.
+What is clear is that a credible alternative now exists for organizations looking to diversify or reposition their hypervisor strategy. Migration no longer needs to be seen as a leap into the unknown, but as a structured, manageable, and well-documented project.
