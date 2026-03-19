@@ -1,0 +1,32 @@
+site_name: VMware to Hyper-V with WAC - Partner Playbook
+site_description: Presales-oriented playbook for VMware to Hyper-V migration using Windows Admin Center VM Conversion.
+site_url: https://jlou07.github.io/vmware-to-hyperv-wac-playbook/
+repo_url: https://github.com/jlou07/vmware-to-hyperv-wac-playbook
+repo_name: jlou07/vmware-to-hyperv-wac-playbook
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+
+nav:
+  - Overview: index.md
+  - Prerequisites: prerequisites.md
+  - Migration Workflow: workflow.md
+  - Limitations and Risks: limitations.md
+  - Hybrid Positioning: hybrid.md
